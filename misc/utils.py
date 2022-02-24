@@ -36,7 +36,7 @@ def display_images_with_alpha(alpha, fixed, moving):
     plt.imshow(sitk.GetArrayViewFromImage(image), cmap='Greys');
     plt.axis('off')
     plt.show()
-    
+
 def display_image(image, size = (5,5), cmap = 'Greys'):
     """
     Displays a single image
@@ -45,7 +45,7 @@ def display_image(image, size = (5,5), cmap = 'Greys'):
     plt.figure(figsize=size)
     plt.imshow(sitk.GetArrayViewFromImage(image), cmap = cmap);
     plt.axis('off')
-    
+
 def display_difference(image1, image2, cmap1 = 'Greys', save = False, location = 'difference.tif'):
     """
     Displays the subtraction of one image by the other.
@@ -60,7 +60,7 @@ def display_difference(image1, image2, cmap1 = 'Greys', save = False, location =
     plt.imshow(sitk.GetArrayViewFromImage(image), cmap = cmap1);
     plt.axis('off')
     plt.show()
-    
+
 def checkerboard(image1, image2, size=(11,11), save = False, location = 'checkerboard.tiff'):
     """
     Displays the checkerboard of two images
@@ -76,9 +76,9 @@ def checkerboard(image1, image2, size=(11,11), save = False, location = 'checker
     display_image(checker, size = size)
     
     return checker
+
     
-    
-    
+
 def display_normalized_difference(image1, image2, cmap1 = 'Greys', save = False, location = 'difference.tif'):
     """
     Displays the subtraction of one normalized image by the other.
@@ -94,15 +94,15 @@ def display_normalized_difference(image1, image2, cmap1 = 'Greys', save = False,
     plt.axis('off')
     plt.show()
 
-    
+
 def write_image(image, location, bitformat = sitk.sitkUInt8):
     """
     save image in original format (Unsigned 8 bit int)
     """
 
     sitk.WriteImage(sitk.Cast(image,bitformat), location)   
-    
-    
+
+
 def get_diviseur_commun(big_num,small_num):
     """
     Gets the diviseur commun
@@ -134,7 +134,7 @@ def get_diviseur_commun(big_num,small_num):
         increment_sup += 1
 
     return value
-    
+
 def downscale_pair_image(image1, image2, scaling_factor = 32):
     """
     Downscales a pair of images by a certain factor
@@ -232,6 +232,8 @@ def tiling(image, x_pixels, y_pixels):
     x_coordinates = [0]
     y_coordinates = [0]
 
+    #if save : mkdir ("./tiles")
+
     for index in np.arange(0, num_x_tiles, 1):
 
         x_coordinates.append(x_window*(index+1))
@@ -247,6 +249,7 @@ def tiling(image, x_pixels, y_pixels):
         for y_index in np.arange(0, num_y_tiles, 1):
             
             im = image[x_coordinates[x_index]:x_coordinates[x_index+1],y_coordinates[y_index]:y_coordinates[y_index+1]]
+            #if save : cv2.imwrite(f"./tiles/{x_index}-{y_index}.png",cv2.cvtColor(im, cv2.COLOR_RGB2BGR))
             frames.append(im)
 
     print(bcolors.OKGREEN + "done" + bcolors.ENDC)
@@ -446,17 +449,17 @@ def extract_patch(image, x, y, patch_size):
     Extract a patch at a certain position (x,y) of an image, with a certain patch size
     """
     
-    patch = np.asarray(image.read_region((y-int(patch_size/2),x-int(patch_size/2)), 0, (patch_size, patch_size)))[:,:,0:3]
+    patch = np.asarray(image.read_region((x-int(patch_size/2),y-int(patch_size/2)),0, (patch_size, patch_size)))[:,:,0:3]
     
     return patch
-        
+
 def draw_circle(image, x, y, pixel_value = (0,255,0), radius = 10, thickness = 2):
     """
     Draws a circle around a certain position (x,y) of an image
     """
     
     cv2.circle(image, (x,y), radius, pixel_value, thickness)
-    
+
 def is_nucleus(image, x, y, threshold, radius = 10):
     """
     Assess if a nucleaus is present

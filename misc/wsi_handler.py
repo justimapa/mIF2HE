@@ -192,7 +192,7 @@ class OpenSlideHandler(FileHandler):
 
 def get_file_handler(path, backend):
     if backend in [
-            '.svs', '.tif', 
+            '.svs', '.tif', '.qptiff',
             '.vms', '.vmu', '.ndpi',
             '.scn', '.mrxs', '.tiff',
             '.svslide',
